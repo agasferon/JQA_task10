@@ -1,10 +1,12 @@
 package ru.netology.manager;
 
 import ru.netology.domain.MovieUnit;
+import ru.netology.repository.MovieRepository;
 
 public class PosterManager {
     private int certainAmount = 10;
-    private MovieUnit[] items = new MovieUnit[0];
+
+    private MovieRepository repository = new MovieRepository();
 
     public PosterManager(int certainAmount) {
         this.certainAmount = certainAmount;
@@ -13,16 +15,16 @@ public class PosterManager {
     public PosterManager() {
     }
 
+    public void setCertainAmount(int certainAmount) {
+        this.certainAmount = certainAmount;
+    }
+
     public void add(MovieUnit item) {
-        int length = items.length + 1;
-        MovieUnit[] tmp = new MovieUnit[length];
-        System.arraycopy(items, 0, tmp, 0, items.length);
-        int lastIndex = tmp.length - 1;
-        tmp[lastIndex] = item;
-        items = tmp;
+        repository.save(item);
     }
 
     public MovieUnit[] getAll() {
+        MovieUnit[] items = repository.findAll();
         MovieUnit[] result = new MovieUnit[items.length];
         for (int i = 0; i < result.length; i++) {
             int index = items.length - i - 1;
@@ -32,6 +34,7 @@ public class PosterManager {
     }
 
     public MovieUnit[] getCertainPoster() {
+        MovieUnit[] items = repository.findAll();
         MovieUnit[] result = new MovieUnit[items.length];
 
         if (items.length > certainAmount) {
@@ -49,17 +52,6 @@ public class PosterManager {
     }
 
     public void removeById(int id) {
-        if (id <= items.length) {
-        int length = items.length - 1;
-        MovieUnit[] tmp = new MovieUnit[length];
-        int index = 0;
-            for (MovieUnit item : items) {
-                if (item.getId() != id) {
-                    tmp[index] = item;
-                    index++;
-                }
-            }
-            items = tmp;
-        }
+        repository.removeById(id);
     }
 }
