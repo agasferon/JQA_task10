@@ -7,7 +7,7 @@ import ru.netology.domain.MovieUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PosterManagerTest {
-    private PosterManager manager = new PosterManager(10);
+    private PosterManager manager = new PosterManager();
 
     private MovieUnit first = new MovieUnit(1, 1, "first", 1, "../poster/filmName.png");
     private MovieUnit second = new MovieUnit(2, 2, "second", 2, "../poster/filmName.png");
@@ -72,7 +72,7 @@ class PosterManagerTest {
         manager.add(sixth);
         manager.add(seventh);
         MovieUnit[] actual = manager.getCertainPoster();
-        MovieUnit[] expected = new MovieUnit[]{seventh, sixth, fifth, fourth, third, null, null};
+        MovieUnit[] expected = new MovieUnit[]{seventh, sixth, fifth, fourth, third};
         assertArrayEquals(expected, actual);
     }
 

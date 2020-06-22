@@ -32,19 +32,12 @@ public class PosterManager {
     }
 
     public MovieUnit[] getCertainPoster() {
-        MovieUnit[] result = new MovieUnit[items.length];
-
-        if (items.length > certainAmount) {
-            for (int i = 0; i < certainAmount; i++) {
+        int certainLength = certainAmount < items.length ? certainAmount : items.length;
+        MovieUnit[] result = new MovieUnit[certainLength];
+            for (int i = 0; i < certainLength; i++) {
                 int index = items.length - i - 1;
                 result[i] = items[index];
             }
-        } else {
-            for (int i = 0; i < result.length; i++) {
-                int index = items.length - i - 1;
-                result[i] = items[index];
-            }
-        }
         return result;
     }
 
