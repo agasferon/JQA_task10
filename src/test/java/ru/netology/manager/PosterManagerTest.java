@@ -1,6 +1,5 @@
 package ru.netology.manager;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,27 +33,11 @@ class PosterManagerTest {
     private MovieUnit eleventh = new MovieUnit(11, 11, "eleventh", 1, "../poster/filmName.png");
     private MovieUnit twelfth = new MovieUnit(12, 12, "twelfth", 3, "../poster/filmName.png");
 
-    @BeforeEach
-    public void setUp() {
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        manager.add(fourth);
-        manager.add(fifth);
-        manager.add(sixth);
-        manager.add(seventh);
-        manager.add(eighth);
-        manager.add(ninth);
-        manager.add(tenth);
-        manager.add(eleventh);
-        manager.add(twelfth);
-    }
-
     @Test
     public void usePosterManagerWithItemsAmountLowestCertain(){
+        PosterManager manager = new PosterManager(5, repository);
         MovieUnit[] returned = new MovieUnit[]{first, second, third};
         doReturn(returned).when(repository).findAll();
-        manager.setCertainAmount(5);
         MovieUnit[] actual = manager.getCertainPoster();
         MovieUnit[] expected = new MovieUnit[]{third, second, first};
         assertArrayEquals(expected, actual);
@@ -62,19 +45,19 @@ class PosterManagerTest {
 
     @Test
     public void usePosterManagerWithItemsAmountHighestCertain(){
+        PosterManager manager = new PosterManager(5, repository);
         MovieUnit[] returned = new MovieUnit[]{first, second, third, fourth, fifth, sixth, seventh};
         doReturn(returned).when(repository).findAll();
-        manager.setCertainAmount(5);
         MovieUnit[] actual = manager.getCertainPoster();
-        MovieUnit[] expected = new MovieUnit[]{seventh, sixth, fifth, fourth, third, null, null};
+        MovieUnit[] expected = new MovieUnit[]{seventh, sixth, fifth, fourth, third};
         assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldGetAll() {
+        PosterManager manager = new PosterManager(10, repository);
         MovieUnit[] returned = new MovieUnit[]{first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth};
         doReturn(returned).when(repository).findAll();
-        manager.setCertainAmount(10);
         MovieUnit[] actual = manager.getCertainPoster();
         MovieUnit[] expected = new MovieUnit[]{tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
         assertArrayEquals(expected, actual);
@@ -107,11 +90,13 @@ class PosterManagerTest {
     }
 
     @Test
-    public void useConstructorWithCertainAmountPosters(){
-        PosterManager manager = new PosterManager(3);
+    public void useMethodAdd(){
+        PosterManager manager = new PosterManager(3, repository);
         manager.add(first);
         manager.add(second);
         manager.add(third);
+        MovieUnit[] returned = new MovieUnit[]{first, second, third};
+        doReturn(returned).when(repository).findAll();
         MovieUnit[] actual = manager.getCertainPoster();
         MovieUnit[] expected = new MovieUnit[]{third, second, first};
         assertArrayEquals(expected, actual);

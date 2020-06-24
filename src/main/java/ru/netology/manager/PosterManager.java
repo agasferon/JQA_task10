@@ -8,15 +8,12 @@ public class PosterManager {
 
     private MovieRepository repository = new MovieRepository();
 
-    public PosterManager(int certainAmount) {
+    public PosterManager(int certainAmount, MovieRepository repository) {
         this.certainAmount = certainAmount;
+        this.repository = repository;
     }
 
     public PosterManager() {
-    }
-
-    public void setCertainAmount(int certainAmount) {
-        this.certainAmount = certainAmount;
     }
 
     public void add(MovieUnit item) {
@@ -35,18 +32,11 @@ public class PosterManager {
 
     public MovieUnit[] getCertainPoster() {
         MovieUnit[] items = repository.findAll();
-        MovieUnit[] result = new MovieUnit[items.length];
-
-        if (items.length > certainAmount) {
-            for (int i = 0; i < certainAmount; i++) {
-                int index = items.length - i - 1;
-                result[i] = items[index];
-            }
-        } else {
-            for (int i = 0; i < result.length; i++) {
-                int index = items.length - i - 1;
-                result[i] = items[index];
-            }
+        int certainLength = certainAmount < items.length ? certainAmount : items.length;
+        MovieUnit[] result = new MovieUnit[certainLength];
+        for (int i = 0; i < certainLength; i++) {
+            int index = items.length - i - 1;
+            result[i] = items[index];
         }
         return result;
     }
